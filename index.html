@@ -1,0 +1,2587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Side Effect Guide — bedside drug-class reference</title>
+<meta name="description" content="A bedside drug-class side-effect and intolerance-conflict reference for cardiology and general prescribing, sourced from KD Tripathi's Pharmacology.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0d2b3e;
+  --ink-2:#163a52;
+  --paper:#f6f8f7;
+  --card:#ffffff;
+  --gold:#b8863c;
+  --gold-soft:#f4e9d8;
+  --mint:#3f7d67;
+  --mint-soft:#e6f0eb;
+  --alert:#c0392b;
+  --alert-soft:#fbe9e7;
+  --line:#dde5e2;
+  --muted:#5c6b72;
+  --shadow: 0 1px 2px rgba(13,43,62,.04), 0 8px 24px -12px rgba(13,43,62,.18);
+  --radius: 14px;
+  --font-display:'Fraunces', Georgia, serif;
+  --font-body:'IBM Plex Sans', -apple-system, Segoe UI, sans-serif;
+  --font-mono:'IBM Plex Mono', ui-monospace, Menlo, monospace;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  font-family:var(--font-body);
+  background:var(--paper);
+  color:var(--ink);
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+::selection{background:var(--gold-soft)}
+a{color:var(--ink-2)}
+:focus-visible{outline:2.5px solid var(--gold);outline-offset:2px;border-radius:4px}
+
+/* ---------- layout shell ---------- */
+.shell{max-width:920px;margin:0 auto;padding:0 20px 90px}
+
+/* ---------- header / ECG signature ---------- */
+.masthead{
+  background:linear-gradient(180deg,var(--ink) 0%, var(--ink-2) 100%);
+  color:#eef3f2;
+  position:relative;
+  overflow:hidden;
+}
+.masthead-inner{
+  max-width:920px;margin:0 auto;
+  padding:34px 20px 22px;
+  position:relative;
+  z-index:2;
+}
+.eyebrow{
+  font-family:var(--font-mono);
+  font-size:.72rem;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--gold);
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:10px;
+}
+.eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--mint);box-shadow:0 0 0 3px rgba(63,125,103,.25)}
+.masthead h1{
+  font-family:var(--font-display);
+  font-weight:600;
+  font-size:clamp(1.9rem,4.4vw,2.6rem);
+  margin:0 0 6px;
+  letter-spacing:-.01em;
+}
+.masthead p{
+  margin:0;
+  max-width:56ch;
+  color:#c7d6d3;
+  font-size:.96rem;
+}
+.masthead p a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(184,134,60,.4)}
+
+/* ECG trace */
+.ecg-wrap{
+  position:relative;
+  height:64px;
+  margin-top:22px;
+  border-top:1px solid rgba(255,255,255,.12);
+}
+.ecg-wrap svg{
+  position:absolute;inset:0;width:200%;height:100%;
+  animation:scroll-ecg 7s linear infinite;
+}
+.ecg-wrap.conflict svg{ animation-duration:2.4s; }
+.ecg-path{
+  fill:none;
+  stroke:var(--mint);
+  stroke-width:1.6;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  filter:drop-shadow(0 0 5px rgba(63,125,103,.55));
+  transition:stroke .35s ease, filter .35s ease;
+}
+.ecg-wrap.conflict .ecg-path{
+  stroke:var(--alert);
+  filter:drop-shadow(0 0 7px rgba(192,57,43,.7));
+}
+@keyframes scroll-ecg{ from{transform:translateX(0)} to{transform:translateX(-50%)} }
+@media (prefers-reduced-motion: reduce){
+  .ecg-wrap svg{ animation:none; }
+}
+.chip-count{
+  position:absolute; top:34px; right:20px;
+  font-family:var(--font-mono);
+  font-size:.72rem;
+  color:#c7d6d3;
+  border:1px solid rgba(255,255,255,.22);
+  border-radius:999px;
+  padding:4px 10px;
+  z-index:3;
+}
+
+/* ---------- cards ---------- */
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:22px 24px;
+  margin-top:-28px;
+  position:relative;
+  z-index:4;
+}
+.card + .card{margin-top:22px}
+.card h2{
+  font-family:var(--font-display);
+  font-size:1.18rem;
+  font-weight:600;
+  margin:0 0 4px;
+  display:flex;
+  align-items:center;
+  gap:9px;
+}
+.card h2 svg{flex:0 0 auto}
+.card .hint{color:var(--muted);font-size:.87rem;margin:0 0 16px}
+
+/* ---------- inputs ---------- */
+.field{position:relative}
+input[type=text]{
+  width:100%;
+  padding:12px 14px 12px 40px;
+  border:1.5px solid var(--line);
+  border-radius:10px;
+  font-family:var(--font-body);
+  font-size:.96rem;
+  background:var(--paper);
+  color:var(--ink);
+  transition:border-color .15s ease, background .15s ease;
+}
+input[type=text]:focus{border-color:var(--ink-2);background:#fff}
+.field svg{
+  position:absolute;left:13px;top:50%;transform:translateY(-50%);
+  color:var(--muted);pointer-events:none;
+}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.row > .field{flex:1;min-width:220px}
+button{
+  font-family:var(--font-body);
+  font-weight:600;
+  font-size:.9rem;
+  background:var(--ink);
+  color:#fff;
+  border:none;
+  padding:0 18px;
+  height:44px;
+  border-radius:10px;
+  cursor:pointer;
+  transition:background .15s ease, transform .1s ease;
+  flex:0 0 auto;
+}
+button:hover{background:var(--ink-2)}
+button:active{transform:scale(.97)}
+button.ghost{background:transparent;color:var(--ink-2);border:1.5px solid var(--line)}
+button.ghost:hover{background:var(--paper)}
+
+/* ---------- chips ---------- */
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;min-height:1px}
+.chip{
+  display:inline-flex;align-items:center;gap:7px;
+  background:var(--mint-soft);color:var(--mint);
+  border-radius:999px;padding:6px 8px 6px 13px;
+  font-size:.85rem;font-weight:500;
+}
+.chip button{
+  height:auto;width:18px;height:18px;padding:0;
+  background:rgba(63,125,103,.16);color:var(--mint);
+  border-radius:50%;font-size:.7rem;line-height:1;
+  display:flex;align-items:center;justify-content:center;
+}
+.chip button:hover{background:rgba(63,125,103,.3)}
+.empty-note{color:var(--muted);font-size:.85rem;font-style:italic}
+
+/* ---------- result blocks ---------- */
+.result{
+  border:1.5px solid var(--line);
+  border-radius:12px;
+  padding:16px 18px;
+  margin-top:14px;
+  animation:rise .25s ease;
+}
+@keyframes rise{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.result.conflict{
+  border-color:var(--alert);
+  background:var(--alert-soft);
+  animation:rise .25s ease, shake .4s ease .1s;
+}
+@keyframes shake{
+  0%,100%{transform:translateX(0)}
+  20%{transform:translateX(-3px)}
+  40%{transform:translateX(3px)}
+  60%{transform:translateX(-2px)}
+  80%{transform:translateX(2px)}
+}
+.banner{
+  display:inline-flex;align-items:center;gap:7px;
+  background:var(--alert);color:#fff;
+  font-weight:600;font-size:.82rem;
+  padding:6px 12px;border-radius:8px;margin-bottom:10px;
+}
+.banner.safe{background:var(--mint)}
+.class-name{font-family:var(--font-display);font-weight:600;font-size:1.02rem;color:var(--ink-2)}
+.drugs-list{font-family:var(--font-mono);font-size:.78rem;color:var(--muted);margin:3px 0 10px}
+.se-row{display:flex;gap:10px;margin-top:6px;font-size:.9rem}
+.se-tag{
+  flex:0 0 auto;font-size:.7rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+  padding:2px 8px;border-radius:6px;height:fit-content;margin-top:2px;
+}
+.se-tag.common{background:var(--gold-soft);color:#7a5a1e}
+.se-tag.uncommon{background:#eef1f2;color:var(--muted)}
+.caution{
+  margin-top:10px;font-size:.85rem;color:#8a5a1e;
+  background:var(--gold-soft);border-radius:8px;padding:8px 12px;
+}
+
+/* ---------- system tabs ---------- */
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.tab{
+  display:inline-flex;align-items:center;gap:6px;
+  border:1.5px solid var(--line);background:var(--paper);
+  color:var(--muted);font-size:.84rem;font-weight:600;
+  padding:7px 13px;border-radius:999px;cursor:pointer;
+  transition:all .15s ease;
+}
+.tab:hover{border-color:var(--ink-2)}
+.tab.active{background:var(--ink);border-color:var(--ink);color:#fff}
+.tab svg{width:14px;height:14px}
+.system-group{display:none}
+.system-group.active{display:block}
+.class-block{
+  border:1px solid var(--line);border-radius:11px;
+  padding:14px 16px;margin-bottom:10px;
+  transition:border-color .15s ease;
+}
+.class-block:hover{border-color:var(--gold)}
+
+/* ---------- footer ---------- */
+footer{
+  text-align:center;color:var(--muted);font-size:.82rem;
+  margin-top:36px;padding-top:18px;border-top:1px solid var(--line);
+}
+
+@media (max-width:560px){
+  .card{padding:18px 16px}
+  .row > .field{min-width:100%}
+  button{width:100%}
+  .chip-count{display:none}
+}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <div class="eyebrow"><span class="dot"></span>Bedside reference · KD Tripathi Pharmacology</div>
+    <h1>Side Effect Guide</h1>
+    <p>Look up any drug's common and uncommon effects, or check what you're about to prescribe against a patient's known intolerances — before you write it. <a href="https://github.com/parale8" target="_blank" rel="noopener">Also runs live inside OneGlance ↗</a></p>
+    <div class="ecg-wrap" id="ecg-wrap">
+      <svg viewBox="0 0 1200 64" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path class="ecg-path" id="ecg-path" d="M0,32 L40.0,32 L52.0,26 L64.0,32 L80.0,32 L90.0,50 L98.0,6 L108.0,44 L118.0,32 L160.0,32 L185.0,18 L210.0,32 L300.0,32 L340.0,32 L352.0,26 L364.0,32 L380.0,32 L390.0,50 L398.0,6 L408.0,44 L418.0,32 L460.0,32 L485.0,18 L510.0,32 L600.0,32 L640.0,32 L652.0,26 L664.0,32 L680.0,32 L690.0,50 L698.0,6 L708.0,44 L718.0,32 L760.0,32 L785.0,18 L810.0,32 L900.0,32 L940.0,32 L952.0,26 L964.0,32 L980.0,32 L990.0,50 L998.0,6 L1008.0,44 L1018.0,32 L1060.0,32 L1085.0,18 L1110.0,32 L1200.0,32"/>
+      </svg>
+    </div>
+    <div class="chip-count" id="class-count">61 classes</div>
+  </div>
+</header>
+
+<div class="shell">
+
+  <!-- Look up a drug -->
+  <section class="card">
+    <h2>
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      Look up a drug
+    </h2>
+    <p class="hint">Type any brand, generic, or class name.</p>
+    <div class="field">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input type="text" id="drug-search" placeholder="amlodipine, metformin, ciprofloxacin…" autocomplete="off">
+    </div>
+    <div id="search-results"></div>
+  </section>
+
+  <!-- Intolerance conflict checker -->
+  <section class="card">
+    <h2>
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01M10.3 3.9L2.7 17a2 2 0 001.7 3h15.2a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg>
+      Check before prescribing
+    </h2>
+    <p class="hint">Add the patient's known intolerances, then check the drug you're about to write.</p>
+    <div class="row">
+      <div class="field">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+        <input type="text" id="intolerance-input" placeholder="e.g. edema due to amlodipine" autocomplete="off">
+      </div>
+      <button id="add-intolerance">Add</button>
+    </div>
+    <div class="chips" id="intolerance-chips"></div>
+
+    <div class="row" style="margin-top:18px">
+      <div class="field">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="7" y="3" width="10" height="18" rx="5"/><path d="M7 10h10"/></svg>
+        <input type="text" id="check-drug-input" placeholder="Drug to prescribe, e.g. nifedipine" autocomplete="off">
+      </div>
+      <button id="check-drug">Check</button>
+    </div>
+    <div id="check-result"></div>
+  </section>
+
+  <!-- Browse all classes -->
+  <section class="card">
+    <h2>
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+      Browse the formulary
+    </h2>
+    <p class="hint">Grouped by system — tap to filter.</p>
+    <div class="tabs" id="system-tabs"></div>
+    <div id="system-groups"></div>
+  </section>
+
+  <footer>
+    Source: KD Tripathi, <em>Essentials of Medical Pharmacology</em>. Not a substitute for clinical judgment — verify anything dose-critical against the primary reference.
+  </footer>
+</div>
+
+<script id="drug-db" type="application/json">
+{
+  "_source": "KD Tripathi, Essentials of Medical Pharmacology (uploaded edition, 1020pp)",
+  "_notes": "common = frequent/common per Tripathi's description. uncommon = occasional/rare/recognised class effect but infrequent. Covers major systems: cardiovascular, antihypertensive, antidiabetic, GI/antacid, analgesic, antibiotic, pulmonary, neurological, anticoagulant/antiplatelet, diuretic. Not exhaustive of all ~1020 pages -- extend as needed by adding a class block.",
+  "classes": {
+    "DHP_CCB": {
+      "label": "Dihydropyridine Calcium Channel Blocker",
+      "drugs": [
+        "amlodipine",
+        "nifedipine",
+        "felodipine",
+        "cilnidipine",
+        "nitrendipine",
+        "nimodipine",
+        "lacidipine",
+        "s-amlodipine"
+      ],
+      "side_effects": {
+        "common": [
+          "ankle/pedal edema",
+          "flushing",
+          "headache",
+          "reflex tachycardia (esp. nifedipine)",
+          "dizziness"
+        ],
+        "uncommon": [
+          "gum hypertrophy",
+          "palpitation",
+          "constipation (mild vs non-DHP)"
+        ]
+      },
+      "source_page": "p.548-549 (Ch.39)",
+      "system": "cardiovascular"
+    },
+    "NonDHP_CCB": {
+      "label": "Non-dihydropyridine CCB (Verapamil/Diltiazem type)",
+      "drugs": [
+        "verapamil",
+        "diltiazem"
+      ],
+      "side_effects": {
+        "common": [
+          "constipation (esp. verapamil)",
+          "bradycardia",
+          "AV conduction delay"
+        ],
+        "uncommon": [
+          "nausea",
+          "worsening of heart failure/CHF precipitation",
+          "cardiac arrest (IV verapamil in sick sinus)"
+        ]
+      },
+      "source_page": "p.548 (Ch.39)",
+      "cautions": [
+        "avoid with beta-blockers (additive SA/AV depression)",
+        "raises plasma digoxin level",
+        "avoid in 2nd/3rd degree AV block"
+      ],
+      "system": "cardiovascular"
+    },
+    "Thiazide": {
+      "label": "Thiazide / thiazide-like diuretic",
+      "drugs": [
+        "hydrochlorothiazide",
+        "hctz",
+        "chlorthalidone",
+        "indapamide",
+        "metolazone"
+      ],
+      "side_effects": {
+        "common": [
+          "hypokalaemia",
+          "hyperuricaemia",
+          "hyperglycaemia (mild)",
+          "hypercalcaemia (reduced Ca excretion)"
+        ],
+        "uncommon": [
+          "hyponatraemia",
+          "hyperlipidaemia (mild, dose-related)",
+          "photosensitivity",
+          "pancreatitis (rare)",
+          "postural hypotension"
+        ]
+      },
+      "source_page": "p.586-587 (Ch.41b)",
+      "cautions": [
+        "hypokalaemia potentiates digoxin toxicity and QT-prolongation-related torsades"
+      ],
+      "system": "cardiovascular"
+    },
+    "Loop_diuretic": {
+      "label": "Loop (high-ceiling) diuretic",
+      "drugs": [
+        "furosemide",
+        "frusemide",
+        "torsemide",
+        "torasemide",
+        "bumetanide"
+      ],
+      "side_effects": {
+        "common": [
+          "hypokalaemia",
+          "hypovolaemia/dehydration",
+          "hypotension"
+        ],
+        "uncommon": [
+          "ototoxicity (esp. with aminoglycosides)",
+          "hyperuricaemia",
+          "hypomagnesaemia",
+          "hypocalcaemia",
+          "interstitial nephritis (rare)"
+        ]
+      },
+      "source_page": "p.586-587 (Ch.41b)",
+      "system": "cardiovascular"
+    },
+    "K_sparing_aldosterone_antag": {
+      "label": "Potassium-sparing / aldosterone antagonist",
+      "drugs": [
+        "spironolactone",
+        "eplerenone",
+        "amiloride",
+        "triamterene"
+      ],
+      "side_effects": {
+        "common": [
+          "hyperkalaemia",
+          "gynaecomastia (spironolactone, dose-related)"
+        ],
+        "uncommon": [
+          "menstrual irregularity",
+          "GI upset"
+        ]
+      },
+      "source_page": "Ch.41b",
+      "system": "cardiovascular"
+    },
+    "CA_inhibitor_diuretic": {
+      "label": "Carbonic anhydrase inhibitor diuretic",
+      "drugs": [
+        "acetazolamide"
+      ],
+      "side_effects": {
+        "common": [
+          "acidosis",
+          "hypokalaemia",
+          "drowsiness",
+          "paresthesia",
+          "fatigue"
+        ],
+        "uncommon": [
+          "hypersensitivity reactions (fever, rash)",
+          "bone marrow depression (rare, serious)"
+        ]
+      },
+      "source_page": "p.587 (Ch.41b)",
+      "cautions": [
+        "contraindicated in liver disease (may precipitate hepatic coma)"
+      ],
+      "system": "cardiovascular"
+    },
+    "ACE_inhibitor": {
+      "label": "ACE inhibitor",
+      "drugs": [
+        "ramipril",
+        "enalapril",
+        "lisinopril",
+        "perindopril",
+        "captopril",
+        "quinapril"
+      ],
+      "side_effects": {
+        "common": [
+          "dry persistent cough",
+          "hypotension (first-dose)",
+          "hyperkalaemia"
+        ],
+        "uncommon": [
+          "angioedema",
+          "acute renal failure (esp. bilateral renal artery stenosis)",
+          "rash",
+          "taste disturbance (captopril)",
+          "neutropenia/agranulocytosis (rare)",
+          "pancreatitis (rare)"
+        ]
+      },
+      "source_page": "Ch.36b",
+      "system": "cardiovascular"
+    },
+    "ARB": {
+      "label": "Angiotensin receptor blocker",
+      "drugs": [
+        "losartan",
+        "telmisartan",
+        "olmesartan",
+        "valsartan",
+        "candesartan",
+        "azilsartan"
+      ],
+      "side_effects": {
+        "common": [
+          "hyperkalaemia",
+          "dizziness"
+        ],
+        "uncommon": [
+          "angioedema (rare, lower risk than ACEI)",
+          "hypotension"
+        ]
+      },
+      "source_page": "Ch.36b",
+      "system": "cardiovascular"
+    },
+    "Beta_blocker": {
+      "label": "Beta blocker",
+      "drugs": [
+        "metoprolol",
+        "atenolol",
+        "bisoprolol",
+        "carvedilol",
+        "nebivolol",
+        "propranolol",
+        "labetalol"
+      ],
+      "side_effects": {
+        "common": [
+          "bradycardia",
+          "fatigue",
+          "cold extremities",
+          "bronchospasm (non-selective)"
+        ],
+        "uncommon": [
+          "worsening of AV block",
+          "masking of hypoglycaemia symptoms",
+          "vivid dreams/depression (lipophilic agents)",
+          "erectile dysfunction",
+          "Raynaud's phenomenon exacerbation (rare)",
+          "psoriasis exacerbation (rare)"
+        ]
+      },
+      "source_page": "Ch.10",
+      "system": "cardiovascular"
+    },
+    "Central_alpha2_agonist": {
+      "label": "Central alpha-2 agonist antihypertensive",
+      "drugs": [
+        "clonidine",
+        "methyldopa"
+      ],
+      "side_effects": {
+        "common": [
+          "sedation",
+          "dry mouth",
+          "rebound hypertension on abrupt withdrawal (clonidine)"
+        ],
+        "uncommon": [
+          "hepatotoxicity/haemolytic anaemia (methyldopa)",
+          "depression"
+        ]
+      },
+      "source_page": "Ch.40",
+      "system": "cardiovascular"
+    },
+    "Alpha1_blocker": {
+      "label": "Alpha-1 adrenergic blocker",
+      "drugs": [
+        "prazosin",
+        "doxazosin",
+        "terazosin"
+      ],
+      "side_effects": {
+        "common": [
+          "first-dose postural hypotension",
+          "dizziness",
+          "headache"
+        ],
+        "uncommon": [
+          "nasal stuffiness",
+          "fluid retention"
+        ]
+      },
+      "source_page": "Ch.40",
+      "system": "cardiovascular"
+    },
+    "Direct_vasodilator": {
+      "label": "Direct arteriolar vasodilator",
+      "drugs": [
+        "hydralazine",
+        "minoxidil"
+      ],
+      "side_effects": {
+        "common": [
+          "reflex tachycardia",
+          "fluid retention",
+          "headache"
+        ],
+        "uncommon": [
+          "lupus-like syndrome (hydralazine)",
+          "hypertrichosis (minoxidil)"
+        ]
+      },
+      "source_page": "Ch.40",
+      "system": "cardiovascular"
+    },
+    "Nitrate": {
+      "label": "Organic nitrate",
+      "drugs": [
+        "glyceryl trinitrate",
+        "gtn",
+        "isosorbide dinitrate",
+        "isosorbide mononitrate"
+      ],
+      "side_effects": {
+        "common": [
+          "headache (throbbing)",
+          "flushing",
+          "postural hypotension"
+        ],
+        "uncommon": [
+          "tolerance with continuous use",
+          "methaemoglobinaemia (high dose)"
+        ]
+      },
+      "source_page": "Ch.39",
+      "cautions": [
+        "avoid with PDE5 inhibitors (sildenafil etc.) \u2014 severe hypotension"
+      ],
+      "system": "cardiovascular"
+    },
+    "Ivabradine": {
+      "label": "If channel inhibitor",
+      "drugs": [
+        "ivabradine"
+      ],
+      "side_effects": {
+        "common": [
+          "luminous phenomena/phosphenes (visual brightness)",
+          "bradycardia"
+        ],
+        "uncommon": [
+          "headache",
+          "dizziness"
+        ]
+      },
+      "source_page": "Ch.39",
+      "system": "cardiovascular"
+    },
+    "Class_III_antiarrhythmic": {
+      "label": "Class III antiarrhythmic (amiodarone-type)",
+      "drugs": [
+        "amiodarone",
+        "dronedarone",
+        "sotalol"
+      ],
+      "side_effects": {
+        "common": [
+          "QT prolongation",
+          "photosensitivity (amiodarone)",
+          "corneal microdeposits (amiodarone)"
+        ],
+        "uncommon": [
+          "thyroid dysfunction (hypo/hyper)",
+          "pulmonary fibrosis (amiodarone)",
+          "hepatotoxicity",
+          "torsades de pointes (esp. sotalol, or with hypokalaemia)"
+        ]
+      },
+      "source_page": "Ch.38",
+      "system": "cardiovascular"
+    },
+    "Class_I_antiarrhythmic": {
+      "label": "Class I antiarrhythmic",
+      "drugs": [
+        "quinidine",
+        "procainamide",
+        "disopyramide",
+        "flecainide",
+        "propafenone",
+        "lidocaine",
+        "lignocaine"
+      ],
+      "side_effects": {
+        "common": [
+          "GI upset (quinidine)",
+          "hypotension",
+          "proarrhythmia"
+        ],
+        "uncommon": [
+          "cinchonism (quinidine)",
+          "lupus-like syndrome (procainamide)",
+          "anticholinergic effects (disopyramide)",
+          "CNS toxicity (lidocaine, high dose)"
+        ]
+      },
+      "source_page": "Ch.38",
+      "system": "cardiovascular"
+    },
+    "Digoxin": {
+      "label": "Cardiac glycoside",
+      "drugs": [
+        "digoxin"
+      ],
+      "side_effects": {
+        "common": [
+          "nausea/anorexia",
+          "visual disturbance (yellow-green halos)"
+        ],
+        "uncommon": [
+          "arrhythmia/toxicity (potentiated by hypokalaemia)",
+          "gynaecomastia"
+        ]
+      },
+      "source_page": "Ch.37",
+      "system": "cardiovascular"
+    },
+    "Oral_anticoagulant_VKA": {
+      "label": "Vitamin K antagonist",
+      "drugs": [
+        "warfarin",
+        "acenocoumarol"
+      ],
+      "side_effects": {
+        "common": [
+          "bleeding/bruising"
+        ],
+        "uncommon": [
+          "skin necrosis",
+          "purple toe syndrome"
+        ]
+      },
+      "source_page": "Ch.44",
+      "system": "coagulation"
+    },
+    "DOAC": {
+      "label": "Direct oral anticoagulant",
+      "drugs": [
+        "dabigatran",
+        "rivaroxaban",
+        "apixaban",
+        "edoxaban"
+      ],
+      "side_effects": {
+        "common": [
+          "bleeding/bruising",
+          "dyspepsia (dabigatran)"
+        ],
+        "uncommon": [
+          "GI bleed (higher with dabigatran/rivaroxaban vs apixaban)"
+        ]
+      },
+      "source_page": "Ch.44",
+      "system": "coagulation"
+    },
+    "Heparin_LMWH": {
+      "label": "Heparin / low molecular weight heparin",
+      "drugs": [
+        "heparin",
+        "enoxaparin",
+        "dalteparin",
+        "fondaparinux"
+      ],
+      "side_effects": {
+        "common": [
+          "bleeding/bruising at injection site"
+        ],
+        "uncommon": [
+          "heparin-induced thrombocytopenia (HIT)",
+          "osteoporosis (long-term unfractionated heparin)"
+        ]
+      },
+      "source_page": "Ch.44",
+      "system": "coagulation"
+    },
+    "Antiplatelet": {
+      "label": "Antiplatelet drug",
+      "drugs": [
+        "aspirin",
+        "clopidogrel",
+        "ticagrelor",
+        "prasugrel",
+        "dipyridamole"
+      ],
+      "side_effects": {
+        "common": [
+          "GI upset",
+          "bleeding/bruising"
+        ],
+        "uncommon": [
+          "GI bleed/peptic ulcer (esp. aspirin)",
+          "dyspnoea (ticagrelor)",
+          "neutropenia (rare, clopidogrel)"
+        ]
+      },
+      "source_page": "Ch.44",
+      "system": "coagulation"
+    },
+    "Statin": {
+      "label": "HMG-CoA reductase inhibitor (statin)",
+      "drugs": [
+        "atorvastatin",
+        "rosuvastatin",
+        "simvastatin",
+        "pravastatin"
+      ],
+      "side_effects": {
+        "common": [
+          "myalgia",
+          "transaminitis (mild, reversible)"
+        ],
+        "uncommon": [
+          "myopathy/rhabdomyolysis",
+          "new-onset diabetes",
+          "hepatotoxicity",
+          "peripheral neuropathy (rare)",
+          "memory/cognitive complaints (rare, reversible)",
+          "interstitial lung disease (very rare)"
+        ]
+      },
+      "source_page": "Ch.45",
+      "system": "cardiovascular"
+    },
+    "Fibrate": {
+      "label": "Fibric acid derivative",
+      "drugs": [
+        "fenofibrate",
+        "gemfibrozil"
+      ],
+      "side_effects": {
+        "common": [
+          "GI upset",
+          "myalgia"
+        ],
+        "uncommon": [
+          "myopathy (esp. with statin combo)",
+          "gallstones",
+          "hepatotoxicity"
+        ]
+      },
+      "source_page": "Ch.45",
+      "system": "cardiovascular"
+    },
+    "Biguanide": {
+      "label": "Biguanide",
+      "drugs": [
+        "metformin"
+      ],
+      "side_effects": {
+        "common": [
+          "GI upset (abdominal pain, nausea, bloating, diarrhoea, metallic taste)"
+        ],
+        "uncommon": [
+          "lactic acidosis (rare, <1/10,000 patient-years; risk in renal impairment/alcohol)",
+          "vitamin B12 deficiency"
+        ]
+      },
+      "source_page": "p.276 (Ch.19)",
+      "system": "endocrine"
+    },
+    "Sulfonylurea": {
+      "label": "Sulfonylurea",
+      "drugs": [
+        "glibenclamide",
+        "glimepiride",
+        "gliclazide",
+        "glipizide"
+      ],
+      "side_effects": {
+        "common": [
+          "hypoglycaemia",
+          "weight gain"
+        ],
+        "uncommon": [
+          "hyponatraemia",
+          "cholestatic jaundice (rare)",
+          "hypersensitivity rash"
+        ]
+      },
+      "source_page": "Ch.19",
+      "system": "endocrine"
+    },
+    "DPP4_inhibitor": {
+      "label": "DPP-4 inhibitor (gliptin)",
+      "drugs": [
+        "sitagliptin",
+        "vildagliptin",
+        "saxagliptin",
+        "linagliptin",
+        "teneligliptin"
+      ],
+      "side_effects": {
+        "common": [
+          "nasopharyngitis",
+          "headache"
+        ],
+        "uncommon": [
+          "pancreatitis (rare)",
+          "hepatotoxicity (vildagliptin)",
+          "cough (vildagliptin)",
+          "peripheral edema",
+          "bullous pemphigoid (rare, skin blistering)",
+          "severe joint pain (rare)"
+        ]
+      },
+      "source_page": "p.276 (Ch.19)",
+      "system": "endocrine"
+    },
+    "SGLT2_inhibitor": {
+      "label": "SGLT2 inhibitor (gliflozin)",
+      "drugs": [
+        "dapagliflozin",
+        "empagliflozin",
+        "canagliflozin"
+      ],
+      "side_effects": {
+        "common": [
+          "genital mycotic infection",
+          "polyuria",
+          "UTI"
+        ],
+        "uncommon": [
+          "euglycaemic diabetic ketoacidosis",
+          "volume depletion/hypotension",
+          "Fournier's gangrene (rare)"
+        ]
+      },
+      "source_page": "Ch.19",
+      "system": "endocrine"
+    },
+    "GLP1_agonist": {
+      "label": "GLP-1 receptor agonist",
+      "drugs": [
+        "liraglutide",
+        "semaglutide",
+        "dulaglutide",
+        "exenatide"
+      ],
+      "side_effects": {
+        "common": [
+          "nausea/vomiting",
+          "weight loss"
+        ],
+        "uncommon": [
+          "pancreatitis (rare)",
+          "gallstones"
+        ]
+      },
+      "source_page": "Ch.19",
+      "system": "endocrine"
+    },
+    "Thiazolidinedione": {
+      "label": "Thiazolidinedione (PPAR\u03b3 agonist)",
+      "drugs": [
+        "pioglitazone"
+      ],
+      "side_effects": {
+        "common": [
+          "weight gain",
+          "fluid retention/edema"
+        ],
+        "uncommon": [
+          "CHF precipitation",
+          "bladder cancer risk (debated)",
+          "fracture risk (women)"
+        ]
+      },
+      "source_page": "p.276 (Ch.19)",
+      "system": "endocrine"
+    },
+    "Insulin": {
+      "label": "Insulin (all types)",
+      "drugs": [
+        "insulin",
+        "human insulin",
+        "insulin glargine",
+        "insulin aspart",
+        "insulin lispro",
+        "insulin detemir",
+        "insulin degludec",
+        "nph insulin"
+      ],
+      "side_effects": {
+        "common": [
+          "hypoglycaemia",
+          "weight gain",
+          "injection site lipohypertrophy"
+        ],
+        "uncommon": [
+          "local allergic reaction",
+          "lipoatrophy"
+        ]
+      },
+      "source_page": "Ch.19",
+      "system": "endocrine"
+    },
+    "Alpha_glucosidase_inhibitor": {
+      "label": "Alpha-glucosidase inhibitor",
+      "drugs": [
+        "acarbose",
+        "voglibose"
+      ],
+      "side_effects": {
+        "common": [
+          "flatulence",
+          "abdominal bloating",
+          "diarrhoea"
+        ],
+        "uncommon": [
+          "hepatotoxicity (rare)"
+        ]
+      },
+      "source_page": "Ch.19",
+      "system": "endocrine"
+    },
+    "PPI": {
+      "label": "Proton pump inhibitor",
+      "drugs": [
+        "omeprazole",
+        "pantoprazole",
+        "esomeprazole",
+        "rabeprazole",
+        "lansoprazole"
+      ],
+      "side_effects": {
+        "common": [
+          "headache",
+          "diarrhoea/constipation",
+          "abdominal pain"
+        ],
+        "uncommon": [
+          "B12 deficiency (long-term)",
+          "hypomagnesaemia (long-term)",
+          "increased fracture risk (long-term)",
+          "C. difficile infection risk",
+          "rebound acid hypersecretion on withdrawal",
+          "acute interstitial nephritis (rare)",
+          "fundic gland polyps (long-term)"
+        ]
+      },
+      "source_page": "Ch.46",
+      "system": "gi"
+    },
+    "H2_blocker": {
+      "label": "H2 receptor blocker",
+      "drugs": [
+        "ranitidine",
+        "famotidine",
+        "cimetidine"
+      ],
+      "side_effects": {
+        "common": [
+          "headache",
+          "dizziness",
+          "constipation/diarrhoea"
+        ],
+        "uncommon": [
+          "gynaecomastia (cimetidine)",
+          "confusion in elderly (cimetidine, high dose)"
+        ]
+      },
+      "source_page": "Ch.46",
+      "system": "gi"
+    },
+    "Antacid": {
+      "label": "Antacid (Al/Mg salts)",
+      "drugs": [
+        "aluminium hydroxide",
+        "magnesium hydroxide",
+        "magaldrate"
+      ],
+      "side_effects": {
+        "common": [
+          "constipation (Al salts)",
+          "diarrhoea (Mg salts)"
+        ],
+        "uncommon": [
+          "hypophosphataemia (Al salts, long-term)",
+          "hypermagnesaemia (renal impairment)"
+        ]
+      },
+      "source_page": "Ch.46",
+      "system": "gi"
+    },
+    "Prokinetic": {
+      "label": "Prokinetic/antiemetic (dopamine antagonist type)",
+      "drugs": [
+        "domperidone",
+        "metoclopramide"
+      ],
+      "side_effects": {
+        "common": [
+          "extrapyramidal symptoms (esp. metoclopramide)",
+          "diarrhoea"
+        ],
+        "uncommon": [
+          "QT prolongation (domperidone)",
+          "galactorrhoea/gynaecomastia",
+          "tardive dyskinesia (metoclopramide, long-term)"
+        ]
+      },
+      "source_page": "Ch.47",
+      "system": "gi"
+    },
+    "Laxative": {
+      "label": "Laxative",
+      "drugs": [
+        "lactulose",
+        "bisacodyl",
+        "ispaghula",
+        "senna",
+        "polyethylene glycol",
+        "peg"
+      ],
+      "side_effects": {
+        "common": [
+          "abdominal cramps",
+          "flatulence (bulk laxatives)"
+        ],
+        "uncommon": [
+          "electrolyte disturbance (stimulant laxatives, chronic use)",
+          "melanosis coli (senna, chronic)"
+        ]
+      },
+      "source_page": "Ch.48",
+      "system": "gi"
+    },
+    "Antidiarrhoeal": {
+      "label": "Antidiarrhoeal",
+      "drugs": [
+        "loperamide",
+        "racecadotril"
+      ],
+      "side_effects": {
+        "common": [
+          "constipation",
+          "abdominal cramps"
+        ],
+        "uncommon": [
+          "toxic megacolon (in infectious colitis, avoid)"
+        ]
+      },
+      "source_page": "Ch.48",
+      "system": "gi"
+    },
+    "NSAID": {
+      "label": "Nonsteroidal anti-inflammatory drug",
+      "drugs": [
+        "ibuprofen",
+        "diclofenac",
+        "naproxen",
+        "indomethacin",
+        "aceclofenac",
+        "mefenamic acid",
+        "etoricoxib",
+        "celecoxib"
+      ],
+      "side_effects": {
+        "common": [
+          "dyspepsia/gastritis",
+          "fluid retention/edema"
+        ],
+        "uncommon": [
+          "peptic ulcer/GI bleed",
+          "acute kidney injury (esp. with diuretics/ACEI)",
+          "hypertension exacerbation",
+          "hepatotoxicity"
+        ]
+      },
+      "source_page": "Ch.14",
+      "cautions": [
+        "combining multiple NSAIDs or NSAID+corticosteroid increases GI bleed risk"
+      ],
+      "system": "analgesic"
+    },
+    "Paracetamol": {
+      "label": "Paracetamol (acetaminophen)",
+      "drugs": [
+        "paracetamol",
+        "acetaminophen"
+      ],
+      "side_effects": {
+        "common": [
+          "generally well tolerated"
+        ],
+        "uncommon": [
+          "hepatotoxicity (overdose or chronic high dose/alcohol use)",
+          "skin rash (rare)"
+        ]
+      },
+      "source_page": "Ch.14",
+      "system": "analgesic"
+    },
+    "Opioid_analgesic": {
+      "label": "Opioid analgesic",
+      "drugs": [
+        "morphine",
+        "tramadol",
+        "fentanyl",
+        "codeine",
+        "pethidine",
+        "oxycodone",
+        "buprenorphine"
+      ],
+      "side_effects": {
+        "common": [
+          "constipation",
+          "nausea/vomiting",
+          "sedation",
+          "respiratory depression (dose-related)"
+        ],
+        "uncommon": [
+          "dependence/tolerance",
+          "urinary retention",
+          "pruritus"
+        ]
+      },
+      "source_page": "Ch.34",
+      "system": "analgesic"
+    },
+    "Penicillin": {
+      "label": "Penicillin/beta-lactam (penicillin class)",
+      "drugs": [
+        "amoxicillin",
+        "ampicillin",
+        "amoxiclav",
+        "amoxicillin-clavulanate",
+        "penicillin g",
+        "piperacillin-tazobactam"
+      ],
+      "side_effects": {
+        "common": [
+          "diarrhoea",
+          "rash"
+        ],
+        "uncommon": [
+          "anaphylaxis/hypersensitivity",
+          "C. difficile colitis"
+        ]
+      },
+      "source_page": "Ch.51",
+      "system": "antimicrobial"
+    },
+    "Cephalosporin": {
+      "label": "Cephalosporin",
+      "drugs": [
+        "cefixime",
+        "ceftriaxone",
+        "cefuroxime",
+        "cefpodoxime",
+        "cefotaxime"
+      ],
+      "side_effects": {
+        "common": [
+          "diarrhoea",
+          "rash"
+        ],
+        "uncommon": [
+          "cross-hypersensitivity with penicillin (partial)",
+          "biliary sludging (ceftriaxone)"
+        ]
+      },
+      "source_page": "Ch.51",
+      "system": "antimicrobial"
+    },
+    "Fluoroquinolone": {
+      "label": "Fluoroquinolone",
+      "drugs": [
+        "ciprofloxacin",
+        "levofloxacin",
+        "ofloxacin",
+        "moxifloxacin",
+        "norfloxacin"
+      ],
+      "side_effects": {
+        "common": [
+          "GI upset",
+          "dizziness"
+        ],
+        "uncommon": [
+          "tendinitis/tendon rupture",
+          "QT prolongation",
+          "CNS effects (seizure risk)",
+          "photosensitivity"
+        ]
+      },
+      "source_page": "p.712 (Ch.50)",
+      "cautions": [
+        "avoid in patients on corticosteroids (higher tendon rupture risk)"
+      ],
+      "system": "antimicrobial"
+    },
+    "Macrolide": {
+      "label": "Macrolide antibiotic",
+      "drugs": [
+        "azithromycin",
+        "clarithromycin",
+        "erythromycin"
+      ],
+      "side_effects": {
+        "common": [
+          "GI upset (esp. erythromycin)",
+          "abdominal cramps"
+        ],
+        "uncommon": [
+          "QT prolongation",
+          "cholestatic jaundice (erythromycin estolate)",
+          "ototoxicity (high dose)"
+        ]
+      },
+      "source_page": "Ch.54",
+      "system": "antimicrobial"
+    },
+    "Aminoglycoside": {
+      "label": "Aminoglycoside",
+      "drugs": [
+        "gentamicin",
+        "amikacin",
+        "tobramycin",
+        "streptomycin"
+      ],
+      "side_effects": {
+        "common": [
+          "nephrotoxicity",
+          "ototoxicity"
+        ],
+        "uncommon": [
+          "neuromuscular blockade (high dose)"
+        ]
+      },
+      "source_page": "p.586, Ch.53",
+      "cautions": [
+        "additive oto/nephrotoxicity with loop diuretics"
+      ],
+      "system": "antimicrobial"
+    },
+    "Tetracycline": {
+      "label": "Tetracycline",
+      "drugs": [
+        "doxycycline",
+        "tetracycline",
+        "minocycline"
+      ],
+      "side_effects": {
+        "common": [
+          "GI upset",
+          "photosensitivity"
+        ],
+        "uncommon": [
+          "tooth discolouration (children)",
+          "hepatotoxicity (high dose)",
+          "benign intracranial hypertension"
+        ]
+      },
+      "source_page": "Ch.52",
+      "system": "antimicrobial"
+    },
+    "Metronidazole_class": {
+      "label": "Nitroimidazole",
+      "drugs": [
+        "metronidazole",
+        "tinidazole"
+      ],
+      "side_effects": {
+        "common": [
+          "metallic taste",
+          "nausea"
+        ],
+        "uncommon": [
+          "disulfiram-like reaction with alcohol",
+          "peripheral neuropathy (prolonged use)"
+        ]
+      },
+      "source_page": "Ch.56",
+      "system": "antimicrobial"
+    },
+    "Cotrimoxazole": {
+      "label": "Sulfonamide/cotrimoxazole",
+      "drugs": [
+        "cotrimoxazole",
+        "sulfamethoxazole",
+        "trimethoprim"
+      ],
+      "side_effects": {
+        "common": [
+          "GI upset",
+          "rash"
+        ],
+        "uncommon": [
+          "Stevens-Johnson syndrome (rare)",
+          "hyperkalaemia",
+          "bone marrow suppression"
+        ]
+      },
+      "source_page": "Ch.50",
+      "system": "antimicrobial"
+    },
+    "SABA_LABA": {
+      "label": "Beta-2 agonist (bronchodilator)",
+      "drugs": [
+        "salbutamol",
+        "albuterol",
+        "formoterol",
+        "salmeterol",
+        "levosalbutamol"
+      ],
+      "side_effects": {
+        "common": [
+          "tremor",
+          "tachycardia/palpitation",
+          "nervousness"
+        ],
+        "uncommon": [
+          "hypokalaemia (high dose)",
+          "paradoxical bronchospasm (rare)"
+        ]
+      },
+      "source_page": "Ch.16",
+      "system": "respiratory"
+    },
+    "ICS": {
+      "label": "Inhaled corticosteroid",
+      "drugs": [
+        "budesonide",
+        "fluticasone",
+        "beclomethasone",
+        "ciclesonide"
+      ],
+      "side_effects": {
+        "common": [
+          "oral candidiasis",
+          "hoarseness/dysphonia"
+        ],
+        "uncommon": [
+          "adrenal suppression (high dose, long-term)",
+          "growth retardation (children, high dose)"
+        ]
+      },
+      "source_page": "Ch.16",
+      "system": "respiratory"
+    },
+    "Anticholinergic_bronchodilator": {
+      "label": "Inhaled anticholinergic",
+      "drugs": [
+        "ipratropium",
+        "tiotropium",
+        "glycopyrronium"
+      ],
+      "side_effects": {
+        "common": [
+          "dry mouth",
+          "cough"
+        ],
+        "uncommon": [
+          "urinary retention",
+          "blurred vision (if sprayed in eye)"
+        ]
+      },
+      "source_page": "Ch.16",
+      "system": "respiratory"
+    },
+    "Theophylline_class": {
+      "label": "Xanthine bronchodilator",
+      "drugs": [
+        "theophylline",
+        "aminophylline"
+      ],
+      "side_effects": {
+        "common": [
+          "nausea",
+          "tremor",
+          "insomnia"
+        ],
+        "uncommon": [
+          "arrhythmia (toxic levels)",
+          "seizures (toxic levels)"
+        ]
+      },
+      "source_page": "Ch.16",
+      "cautions": [
+        "narrow therapeutic index; monitor levels"
+      ],
+      "system": "respiratory"
+    },
+    "Leukotriene_antagonist": {
+      "label": "Leukotriene receptor antagonist",
+      "drugs": [
+        "montelukast",
+        "zafirlukast"
+      ],
+      "side_effects": {
+        "common": [
+          "headache",
+          "GI upset"
+        ],
+        "uncommon": [
+          "neuropsychiatric events (mood changes, rare)",
+          "Churg-Strauss syndrome (very rare)"
+        ]
+      },
+      "source_page": "Ch.16",
+      "system": "respiratory"
+    },
+    "Antiepileptic_classic": {
+      "label": "Classic antiepileptic",
+      "drugs": [
+        "phenytoin",
+        "carbamazepine",
+        "sodium valproate",
+        "valproate",
+        "phenobarbitone"
+      ],
+      "side_effects": {
+        "common": [
+          "sedation/drowsiness",
+          "GI upset",
+          "gum hypertrophy (phenytoin)"
+        ],
+        "uncommon": [
+          "hepatotoxicity (valproate)",
+          "Stevens-Johnson syndrome (carbamazepine, phenytoin)",
+          "ataxia/nystagmus (phenytoin toxicity)",
+          "aplastic anaemia (rare)"
+        ]
+      },
+      "source_page": "Ch.30",
+      "system": "neurological"
+    },
+    "Antiepileptic_newer": {
+      "label": "Newer antiepileptic",
+      "drugs": [
+        "levetiracetam",
+        "lamotrigine",
+        "gabapentin",
+        "pregabalin",
+        "topiramate"
+      ],
+      "side_effects": {
+        "common": [
+          "somnolence",
+          "dizziness"
+        ],
+        "uncommon": [
+          "Stevens-Johnson syndrome (lamotrigine, esp. rapid titration)",
+          "behavioural changes (levetiracetam)",
+          "weight gain (pregabalin)"
+        ]
+      },
+      "source_page": "Ch.30",
+      "system": "neurological"
+    },
+    "Antiparkinsonian_levodopa": {
+      "label": "Levodopa/dopaminergic",
+      "drugs": [
+        "levodopa",
+        "carbidopa-levodopa",
+        "pramipexole",
+        "ropinirole"
+      ],
+      "side_effects": {
+        "common": [
+          "nausea/vomiting",
+          "postural hypotension",
+          "dyskinesia (long-term levodopa)"
+        ],
+        "uncommon": [
+          "psychiatric symptoms/hallucinations",
+          "impulse control disorders (dopamine agonists)"
+        ]
+      },
+      "source_page": "Ch.31",
+      "system": "neurological"
+    },
+    "Antipsychotic_typical": {
+      "label": "Typical (first-gen) antipsychotic",
+      "drugs": [
+        "haloperidol",
+        "chlorpromazine"
+      ],
+      "side_effects": {
+        "common": [
+          "extrapyramidal symptoms",
+          "sedation"
+        ],
+        "uncommon": [
+          "tardive dyskinesia",
+          "neuroleptic malignant syndrome (rare)",
+          "QT prolongation"
+        ]
+      },
+      "source_page": "Ch.32",
+      "system": "neurological"
+    },
+    "Antipsychotic_atypical": {
+      "label": "Atypical (second-gen) antipsychotic",
+      "drugs": [
+        "olanzapine",
+        "risperidone",
+        "quetiapine",
+        "aripiprazole",
+        "clozapine"
+      ],
+      "side_effects": {
+        "common": [
+          "weight gain",
+          "sedation",
+          "metabolic syndrome"
+        ],
+        "uncommon": [
+          "agranulocytosis (clozapine)",
+          "QT prolongation",
+          "hyperglycaemia/new-onset diabetes"
+        ]
+      },
+      "source_page": "Ch.32",
+      "system": "neurological"
+    },
+    "SSRI": {
+      "label": "Selective serotonin reuptake inhibitor",
+      "drugs": [
+        "fluoxetine",
+        "sertraline",
+        "escitalopram",
+        "paroxetine"
+      ],
+      "side_effects": {
+        "common": [
+          "nausea",
+          "insomnia/somnolence",
+          "sexual dysfunction"
+        ],
+        "uncommon": [
+          "hyponatraemia (SIADH, esp. elderly)",
+          "serotonin syndrome (esp. with other serotonergic drugs)",
+          "GI bleed risk (with NSAIDs)",
+          "bruxism (rare)",
+          "increased suicidality risk in young patients (early treatment, boxed warning)"
+        ]
+      },
+      "source_page": "Ch.33",
+      "system": "neurological"
+    },
+    "TCA": {
+      "label": "Tricyclic antidepressant",
+      "drugs": [
+        "amitriptyline",
+        "imipramine",
+        "nortriptyline"
+      ],
+      "side_effects": {
+        "common": [
+          "dry mouth",
+          "constipation",
+          "sedation",
+          "postural hypotension"
+        ],
+        "uncommon": [
+          "cardiac arrhythmia/QT prolongation (overdose risk)",
+          "urinary retention"
+        ]
+      },
+      "source_page": "Ch.33",
+      "system": "neurological"
+    },
+    "Benzodiazepine": {
+      "label": "Benzodiazepine",
+      "drugs": [
+        "diazepam",
+        "alprazolam",
+        "lorazepam",
+        "clonazepam"
+      ],
+      "side_effects": {
+        "common": [
+          "sedation/drowsiness",
+          "dependence with prolonged use"
+        ],
+        "uncommon": [
+          "respiratory depression (esp. with opioids)",
+          "paradoxical agitation (elderly)",
+          "memory impairment"
+        ]
+      },
+      "source_page": "Ch.29",
+      "system": "neurological"
+    },
+    "DMARD_methotrexate": {
+      "label": "Methotrexate (DMARD, low-dose weekly)",
+      "drugs": [
+        "methotrexate",
+        "mtx"
+      ],
+      "side_effects": {
+        "common": [
+          "oral ulceration",
+          "GI upset (nausea)"
+        ],
+        "uncommon": [
+          "hepatotoxicity/cirrhosis (long-term)",
+          "bone marrow suppression/leucopenia",
+          "pneumonitis",
+          "increased chest infection risk",
+          "teratogenicity"
+        ]
+      },
+      "system": "rheumatology",
+      "source_page": "p.210-211 (Ch.15)",
+      "cautions": [
+        "contraindicated in pregnancy, liver disease, active infection, peptic ulcer",
+        "toxicity increased by probenecid, aspirin, trimethoprim"
+      ]
+    },
+    "DMARD_sulfasalazine": {
+      "label": "Sulfasalazine",
+      "drugs": [
+        "sulfasalazine"
+      ],
+      "side_effects": {
+        "common": [
+          "GI upset",
+          "rash"
+        ],
+        "uncommon": [
+          "neutropenia/thrombocytopenia (~10%)",
+          "hepatitis"
+        ]
+      },
+      "system": "rheumatology",
+      "source_page": "p.211 (Ch.15)"
+    },
+    "DMARD_hydroxychloroquine": {
+      "label": "Hydroxychloroquine / chloroquine (antirheumatic use)",
+      "drugs": [
+        "hydroxychloroquine",
+        "chloroquine"
+      ],
+      "side_effects": {
+        "common": [
+          "rash",
+          "GI upset",
+          "graying of hair"
+        ],
+        "uncommon": [
+          "retinal damage/corneal opacity (long-term, less with HCQ)",
+          "irritable bowel-like symptoms",
+          "myopathy",
+          "neuropathy"
+        ]
+      },
+      "system": "rheumatology",
+      "source_page": "p.211 (Ch.15)",
+      "cautions": [
+        "requires periodic ophthalmological monitoring on long-term therapy"
+      ]
+    },
+    "DMARD_leflunomide": {
+      "label": "Leflunomide",
+      "drugs": [
+        "leflunomide"
+      ],
+      "side_effects": {
+        "common": [
+          "diarrhoea",
+          "headache",
+          "nausea",
+          "rash",
+          "hair loss"
+        ],
+        "uncommon": [
+          "thrombocytopenia",
+          "leucopenia",
+          "hepatotoxicity (raised transaminases)",
+          "increased chest infection risk"
+        ]
+      },
+      "system": "rheumatology",
+      "source_page": "p.212 (Ch.15)",
+      "cautions": [
+        "not to be used in children or pregnant/lactating women",
+        "more hepatotoxic combined with methotrexate"
+      ]
+    },
+    "DMARD_azathioprine": {
+      "label": "Azathioprine (as DMARD/immunosuppressant)",
+      "drugs": [
+        "azathioprine"
+      ],
+      "side_effects": {
+        "common": [
+          "GI upset"
+        ],
+        "uncommon": [
+          "bone marrow suppression (leucopenia)",
+          "hepatotoxicity/jaundice",
+          "increased infection risk"
+        ]
+      },
+      "system": "rheumatology",
+      "source_page": "p.211 (Ch.15)",
+      "cautions": [
+        "not combined with methotrexate"
+      ]
+    },
+    "TNF_alpha_inhibitor": {
+      "label": "TNF-alpha inhibitor (biologic)",
+      "drugs": [
+        "etanercept",
+        "infliximab",
+        "adalimumab"
+      ],
+      "side_effects": {
+        "common": [
+          "injection site reaction (pain, redness, itching, swelling)",
+          "increased respiratory/chest infection risk"
+        ],
+        "uncommon": [
+          "reactivation of tuberculosis",
+          "opportunistic infections",
+          "infusion reaction (fever, chills, urticaria, rarely anaphylaxis \u2014 infliximab)",
+          "worsening of CHF"
+        ]
+      },
+      "system": "rheumatology",
+      "source_page": "p.212 (Ch.15)",
+      "cautions": [
+        "screen for latent TB before starting"
+      ]
+    },
+    "IL1_antagonist": {
+      "label": "IL-1 antagonist (biologic)",
+      "drugs": [
+        "anakinra"
+      ],
+      "side_effects": {
+        "common": [
+          "local injection site reaction"
+        ],
+        "uncommon": [
+          "increased chest infection risk"
+        ]
+      },
+      "system": "rheumatology",
+      "source_page": "p.212 (Ch.15)"
+    },
+    "Biologic_other_RA": {
+      "label": "Other biologic DMARD (T-cell/B-cell targeted)",
+      "drugs": [
+        "abatacept",
+        "rituximab"
+      ],
+      "side_effects": {
+        "common": [
+          "infusion-related reaction"
+        ],
+        "uncommon": [
+          "increased infection risk",
+          "B-cell depletion (rituximab)"
+        ]
+      },
+      "system": "rheumatology",
+      "source_page": "p.212 (Ch.15)"
+    },
+    "Colchicine": {
+      "label": "Colchicine (gout)",
+      "drugs": [
+        "colchicine"
+      ],
+      "side_effects": {
+        "common": [
+          "diarrhoea",
+          "nausea/vomiting",
+          "abdominal pain"
+        ],
+        "uncommon": [
+          "bone marrow suppression (overdose/prolonged use)",
+          "neuromyopathy (long-term)"
+        ]
+      },
+      "system": "rheumatology",
+      "source_page": "Ch.15"
+    },
+    "Xanthine_oxidase_inhibitor": {
+      "label": "Xanthine oxidase inhibitor (gout)",
+      "drugs": [
+        "allopurinol",
+        "febuxostat"
+      ],
+      "side_effects": {
+        "common": [
+          "rash",
+          "GI upset"
+        ],
+        "uncommon": [
+          "Stevens-Johnson syndrome/toxic epidermal necrolysis (rare, allopurinol)",
+          "hepatotoxicity",
+          "hypersensitivity vasculitis"
+        ]
+      },
+      "system": "rheumatology",
+      "source_page": "Ch.15"
+    },
+    "Calcineurin_inhibitor": {
+      "label": "Calcineurin inhibitor",
+      "drugs": [
+        "cyclosporine",
+        "ciclosporin",
+        "tacrolimus"
+      ],
+      "side_effects": {
+        "common": [
+          "nephrotoxicity",
+          "hypertension",
+          "tremor",
+          "gum hypertrophy (cyclosporine)"
+        ],
+        "uncommon": [
+          "hyperkalaemia",
+          "neurotoxicity (tacrolimus)",
+          "new-onset diabetes (tacrolimus)",
+          "hirsutism (cyclosporine)"
+        ]
+      },
+      "system": "rheumatology",
+      "source_page": "Ch.63",
+      "cautions": [
+        "nephrotoxicity increased with other nephrotoxic drugs"
+      ]
+    },
+    "Mycophenolate": {
+      "label": "Mycophenolate mofetil",
+      "drugs": [
+        "mycophenolate",
+        "mycophenolate mofetil"
+      ],
+      "side_effects": {
+        "common": [
+          "GI upset (diarrhoea, nausea)"
+        ],
+        "uncommon": [
+          "bone marrow suppression (leucopenia)",
+          "increased infection risk"
+        ]
+      },
+      "system": "rheumatology",
+      "source_page": "Ch.63"
+    },
+    "mTOR_inhibitor": {
+      "label": "mTOR inhibitor (immunosuppressant)",
+      "drugs": [
+        "sirolimus",
+        "everolimus"
+      ],
+      "side_effects": {
+        "common": [
+          "hyperlipidaemia",
+          "mouth ulcers"
+        ],
+        "uncommon": [
+          "impaired wound healing",
+          "pneumonitis",
+          "thrombocytopenia"
+        ]
+      },
+      "system": "rheumatology",
+      "source_page": "Ch.63"
+    },
+    "Alkylating_agent": {
+      "label": "Alkylating agent",
+      "drugs": [
+        "cyclophosphamide",
+        "ifosfamide",
+        "chlorambucil",
+        "busulfan",
+        "dacarbazine",
+        "procarbazine"
+      ],
+      "side_effects": {
+        "common": [
+          "nausea/vomiting",
+          "alopecia",
+          "bone marrow suppression"
+        ],
+        "uncommon": [
+          "haemorrhagic cystitis (cyclophosphamide/ifosfamide)",
+          "infertility/sterility",
+          "secondary malignancy (long-term)",
+          "pulmonary fibrosis (busulfan)"
+        ]
+      },
+      "system": "oncology",
+      "source_page": "Ch.62",
+      "cautions": [
+        "mesna co-administered with ifosfamide to reduce haemorrhagic cystitis"
+      ]
+    },
+    "Platinum_compound": {
+      "label": "Platinum compound",
+      "drugs": [
+        "cisplatin",
+        "carboplatin",
+        "oxaliplatin"
+      ],
+      "side_effects": {
+        "common": [
+          "nausea/vomiting (marked)",
+          "peripheral neuropathy (oxaliplatin, cold-triggered)"
+        ],
+        "uncommon": [
+          "nephrotoxicity (cisplatin)",
+          "ototoxicity (cisplatin)",
+          "myelosuppression (carboplatin)",
+          "electrolyte wasting (Mg, K)"
+        ]
+      },
+      "system": "oncology",
+      "source_page": "p.49797 (Ch.62)",
+      "cautions": [
+        "vigorous hydration used to reduce cisplatin nephrotoxicity"
+      ]
+    },
+    "Antimetabolite_oncology": {
+      "label": "Antimetabolite (oncology)",
+      "drugs": [
+        "methotrexate high-dose",
+        "5-fluorouracil",
+        "5-fu",
+        "capecitabine",
+        "cytarabine",
+        "gemcitabine",
+        "6-mercaptopurine"
+      ],
+      "side_effects": {
+        "common": [
+          "bone marrow suppression",
+          "GI mucositis/diarrhoea",
+          "nausea/vomiting"
+        ],
+        "uncommon": [
+          "hand-foot syndrome (capecitabine/5-FU)",
+          "hepatotoxicity/jaundice (6-MP)",
+          "SIADH (cytarabine, rare)"
+        ]
+      },
+      "system": "oncology",
+      "source_page": "Ch.62"
+    },
+    "Anthracycline": {
+      "label": "Anthracycline antibiotic (cytotoxic)",
+      "drugs": [
+        "doxorubicin",
+        "daunorubicin",
+        "epirubicin"
+      ],
+      "side_effects": {
+        "common": [
+          "nausea/vomiting",
+          "alopecia",
+          "bone marrow suppression",
+          "red discolouration of urine"
+        ],
+        "uncommon": [
+          "cardiotoxicity/cardiomyopathy (cumulative dose-related, can be irreversible)",
+          "extravasation tissue necrosis"
+        ]
+      },
+      "system": "oncology",
+      "source_page": "Ch.62",
+      "cautions": [
+        "cumulative lifetime dose limit due to irreversible cardiotoxicity risk"
+      ]
+    },
+    "Taxane": {
+      "label": "Taxane (mitotic inhibitor)",
+      "drugs": [
+        "paclitaxel",
+        "docetaxel"
+      ],
+      "side_effects": {
+        "common": [
+          "peripheral neuropathy",
+          "alopecia",
+          "myalgia"
+        ],
+        "uncommon": [
+          "hypersensitivity reaction (infusion-related)",
+          "bone marrow suppression",
+          "fluid retention (docetaxel)"
+        ]
+      },
+      "system": "oncology",
+      "source_page": "Ch.62"
+    },
+    "Vinca_alkaloid": {
+      "label": "Vinca alkaloid",
+      "drugs": [
+        "vincristine",
+        "vinblastine"
+      ],
+      "side_effects": {
+        "common": [
+          "peripheral neuropathy (vincristine)",
+          "constipation"
+        ],
+        "uncommon": [
+          "bone marrow suppression (more with vinblastine)",
+          "SIADH",
+          "jaw pain"
+        ]
+      },
+      "system": "oncology",
+      "source_page": "Ch.62"
+    },
+    "Tyrosine_kinase_inhibitor": {
+      "label": "Tyrosine kinase inhibitor (targeted therapy)",
+      "drugs": [
+        "imatinib",
+        "erlotinib",
+        "gefitinib",
+        "sunitinib",
+        "sorafenib"
+      ],
+      "side_effects": {
+        "common": [
+          "fatigue",
+          "diarrhoea",
+          "rash/skin toxicity",
+          "nausea"
+        ],
+        "uncommon": [
+          "hepatotoxicity",
+          "QT prolongation",
+          "hand-foot skin reaction (sunitinib/sorafenib)",
+          "hypothyroidism (sunitinib)",
+          "fluid retention/edema (imatinib)"
+        ]
+      },
+      "system": "oncology",
+      "source_page": "Ch.62"
+    },
+    "Monoclonal_antibody_oncology": {
+      "label": "Monoclonal antibody (oncology)",
+      "drugs": [
+        "trastuzumab",
+        "rituximab oncology",
+        "bevacizumab",
+        "cetuximab"
+      ],
+      "side_effects": {
+        "common": [
+          "infusion reaction (fever, chills)",
+          "rash (cetuximab)"
+        ],
+        "uncommon": [
+          "cardiotoxicity (trastuzumab)",
+          "hypertension/GI perforation/bleeding (bevacizumab)",
+          "increased infection risk"
+        ]
+      },
+      "system": "oncology",
+      "source_page": "Ch.62"
+    },
+    "Immune_checkpoint_inhibitor": {
+      "label": "Immune checkpoint inhibitor",
+      "drugs": [
+        "pembrolizumab",
+        "nivolumab",
+        "ipilimumab"
+      ],
+      "side_effects": {
+        "common": [
+          "fatigue",
+          "rash",
+          "diarrhoea"
+        ],
+        "uncommon": [
+          "immune-related adverse events: colitis, pneumonitis, hepatitis, endocrinopathy (thyroiditis, hypophysitis, adrenal insufficiency) \u2014 can be severe"
+        ]
+      },
+      "system": "oncology",
+      "source_page": "Ch.62",
+      "cautions": [
+        "immune-related adverse events can occur months after last dose and be organ-threatening"
+      ]
+    },
+    "Hormonal_oncology": {
+      "label": "Hormonal anticancer agent",
+      "drugs": [
+        "tamoxifen",
+        "letrozole",
+        "anastrozole",
+        "bicalutamide",
+        "leuprolide"
+      ],
+      "side_effects": {
+        "common": [
+          "hot flushes",
+          "mood changes"
+        ],
+        "uncommon": [
+          "endometrial cancer risk/thromboembolism (tamoxifen)",
+          "osteoporosis (aromatase inhibitors)",
+          "gynaecomastia (bicalutamide)"
+        ]
+      },
+      "system": "oncology",
+      "source_page": "Ch.62"
+    },
+    "Carbapenem": {
+      "label": "Carbapenem (reserve broad-spectrum beta-lactam)",
+      "drugs": [
+        "imipenem",
+        "meropenem",
+        "ertapenem",
+        "faropenem",
+        "doripenem"
+      ],
+      "side_effects": {
+        "common": [
+          "GI upset (diarrhoea, nausea)",
+          "rash"
+        ],
+        "uncommon": [
+          "seizures (esp. imipenem, dose/renal-function related)",
+          "C. difficile colitis",
+          "hypersensitivity/cross-reactivity with penicillin allergy (partial)"
+        ]
+      },
+      "system": "antimicrobial",
+      "source_page": "p.731-732 (Ch.51)",
+      "cautions": [
+        "imipenem given with cilastatin (blocks renal dehydropeptidase breakdown); meropenem less epileptogenic than imipenem; reserve for hospital-acquired/resistant infections"
+      ]
+    },
+    "Linezolid_glycopeptide": {
+      "label": "Glycopeptide / oxazolidinone (reserve gram-positive cover)",
+      "drugs": [
+        "vancomycin",
+        "linezolid",
+        "teicoplanin"
+      ],
+      "side_effects": {
+        "common": [
+          "GI upset (linezolid)",
+          "infusion-related 'red man syndrome' (vancomycin, rate-related)"
+        ],
+        "uncommon": [
+          "nephrotoxicity/ototoxicity (vancomycin)",
+          "thrombocytopenia/myelosuppression (linezolid, prolonged use)",
+          "peripheral/optic neuropathy (linezolid, prolonged use)",
+          "serotonin syndrome risk (linezolid + SSRIs \u2014 weak MAO inhibitor)"
+        ]
+      },
+      "system": "antimicrobial",
+      "source_page": "Ch.54"
+    },
+    "Nicorandil": {
+      "label": "Potassium channel opener (antianginal)",
+      "drugs": [
+        "nicorandil"
+      ],
+      "side_effects": {
+        "common": [
+          "flushing",
+          "palpitation",
+          "headache",
+          "dizziness",
+          "nausea",
+          "vomiting"
+        ],
+        "uncommon": [
+          "large painful aphthous/oral ulcers (heals on stopping)",
+          "GI ulceration (anal, perianal \u2014 reported with prolonged use)",
+          "hypotension"
+        ]
+      },
+      "system": "cardiovascular",
+      "source_page": "p.552-553 (Ch.39)"
+    },
+    "Efonidipine": {
+      "label": "Dihydropyridine CCB with T/L-type dual action (newer)",
+      "drugs": [
+        "efonidipine"
+      ],
+      "side_effects": {
+        "common": [
+          "flushing",
+          "headache",
+          "dizziness"
+        ],
+        "uncommon": [
+          "ankle edema (lower incidence than classic DHPs, still reported)",
+          "reflex tachycardia (less than nifedipine \u2014 dual T/L-channel action blunts reflex response)"
+        ]
+      },
+      "system": "cardiovascular",
+      "source_page": "not in source text \u2014 supplementary",
+      "cautions": [
+        "not covered in this edition of Tripathi \u2014 based on general clinical pharmacology; verify specific numeric data against current prescribing information"
+      ]
+    },
+    "Ranolazine": {
+      "label": "Antianginal (late sodium current inhibitor)",
+      "drugs": [
+        "ranolazine"
+      ],
+      "side_effects": {
+        "common": [
+          "constipation",
+          "dizziness",
+          "headache",
+          "nausea"
+        ],
+        "uncommon": [
+          "QT prolongation",
+          "syncope"
+        ]
+      },
+      "system": "cardiovascular",
+      "source_page": "Ch.39"
+    },
+    "Sacubitril_valsartan": {
+      "label": "Angiotensin receptor-neprilysin inhibitor (ARNI)",
+      "drugs": [
+        "sacubitril",
+        "sacubitril-valsartan",
+        "entresto"
+      ],
+      "side_effects": {
+        "common": [
+          "hypotension",
+          "hyperkalaemia",
+          "dizziness"
+        ],
+        "uncommon": [
+          "angioedema (esp. if switched too soon from ACE inhibitor)",
+          "renal impairment"
+        ]
+      },
+      "system": "cardiovascular",
+      "source_page": "not in source text \u2014 supplementary",
+      "cautions": [
+        "36-hour washout required when switching from an ACE inhibitor \u2014 angioedema risk"
+      ]
+    },
+    "SGLT2_inhibitor_HF": {
+      "label": "SGLT2 inhibitor (heart failure indication)",
+      "drugs": [
+        "dapagliflozin hf",
+        "empagliflozin hf"
+      ],
+      "side_effects": {
+        "common": [
+          "genital mycotic infection",
+          "polyuria"
+        ],
+        "uncommon": [
+          "euglycaemic DKA",
+          "volume depletion",
+          "Fournier's gangrene (rare)"
+        ]
+      },
+      "system": "cardiovascular",
+      "source_page": "Ch.19 (extrapolated CV indication)",
+      "cautions": [
+        "same drugs/class as SGLT2_inhibitor under endocrine \u2014 listed again here for HF-specific prescribing context"
+      ]
+    }
+  }
+}
+</script>
+
+<script>
+(function() {
+  const db = JSON.parse(document.getElementById('drug-db').textContent);
+  const ecgWrap = document.getElementById('ecg-wrap');
+
+  document.getElementById('class-count').textContent = Object.keys(db.classes).length + ' classes';
+
+  function normalize(name) {
+    return (name || '').toLowerCase().replace(/[^a-z0-9 ]/g, '').trim();
+  }
+
+  function classesForDrug(drugName) {
+    const n = normalize(drugName);
+    if (!n) return [];
+    const hits = [];
+    for (const [key, c] of Object.entries(db.classes)) {
+      if (c.drugs.some(d => n.includes(normalize(d)) || normalize(d).includes(n))) hits.push(key);
+    }
+    return hits;
+  }
+
+  function classBlockHTML(key) {
+    const c = db.classes[key];
+    return '<div class="result">' +
+      '<div class="class-name">' + c.label + '</div>' +
+      '<div class="drugs-list">' + c.drugs.join(' · ') + '</div>' +
+      '<div class="se-row"><span class="se-tag common">Common</span><span>' + c.side_effects.common.join(', ') + '</span></div>' +
+      '<div class="se-row"><span class="se-tag uncommon">Uncommon</span><span>' + c.side_effects.uncommon.join(', ') + '</span></div>' +
+      (c.cautions ? '<div class="caution"><b>Caution — </b>' + c.cautions.join('; ') + '</div>' : '') +
+      '</div>';
+  }
+
+  function pulseConflict(active) {
+    ecgWrap.classList.toggle('conflict', active);
+    if (active) {
+      clearTimeout(pulseConflict._t);
+      pulseConflict._t = setTimeout(() => ecgWrap.classList.remove('conflict'), 3200);
+    }
+  }
+
+  // --- Search ---
+  const searchInput = document.getElementById('drug-search');
+  const searchResults = document.getElementById('search-results');
+  searchInput.addEventListener('input', () => {
+    const val = searchInput.value.trim();
+    if (!val) { searchResults.innerHTML = ''; return; }
+    const keys = classesForDrug(val);
+    searchResults.innerHTML = keys.length
+      ? keys.map(classBlockHTML).join('')
+      : '<p class="empty-note" style="margin-top:10px">No match yet — try a different spelling, or it isn\'t in the database yet.</p>';
+  });
+
+  // --- Intolerance chips ---
+  let intolerances = [];
+  const chipContainer = document.getElementById('intolerance-chips');
+  const intolInput = document.getElementById('intolerance-input');
+
+  function renderChips() {
+    chipContainer.innerHTML = intolerances.length
+      ? intolerances.map((t, i) => '<span class="chip">' + t + ' <button data-i="' + i + '" aria-label="Remove">×</button></span>').join('')
+      : '<span class="empty-note">No intolerances added yet.</span>';
+    chipContainer.querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        intolerances.splice(Number(btn.dataset.i), 1);
+        renderChips();
+      });
+    });
+  }
+  renderChips();
+
+  function addIntolerance() {
+    const val = intolInput.value.trim();
+    if (val) { intolerances.push(val); intolInput.value = ''; renderChips(); intolInput.focus(); }
+  }
+  document.getElementById('add-intolerance').addEventListener('click', addIntolerance);
+  intolInput.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); addIntolerance(); } });
+
+  // --- Conflict check ---
+  function runCheck() {
+    const drug = document.getElementById('check-drug-input').value.trim();
+    const resultEl = document.getElementById('check-result');
+    if (!drug) { resultEl.innerHTML = ''; return; }
+    const drugClasses = classesForDrug(drug);
+    if (!drugClasses.length) {
+      resultEl.innerHTML = '<div class="result"><span class="empty-note">No class data for "' + drug + '" — can\'t check yet.</span></div>';
+      return;
+    }
+    let conflict = null;
+    for (const text of intolerances) {
+      const n = normalize(text);
+      for (const [key, c] of Object.entries(db.classes)) {
+        if (c.drugs.some(d => n.includes(normalize(d))) && drugClasses.includes(key)) {
+          conflict = { reason: text, classLabel: c.label };
+          break;
+        }
+      }
+      if (conflict) break;
+    }
+    pulseConflict(!!conflict);
+    const banner = conflict
+      ? '<div class="result conflict"><span class="banner">⚠ Conflict — verify before prescribing</span><div>Patient intolerance "<b>' + conflict.reason + '</b>" shares a class with <b>' + drug + '</b> (' + conflict.classLabel + ').</div></div>'
+      : '<div class="result"><span class="banner safe">✓ No conflict found</span><div>No overlap between <b>' + drug + '</b> and the listed intolerances.</div></div>';
+    resultEl.innerHTML = banner + drugClasses.map(classBlockHTML).join('');
+  }
+  document.getElementById('check-drug').addEventListener('click', runCheck);
+  document.getElementById('check-drug-input').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); runCheck(); } });
+
+  // --- Browse by system ---
+  const SYSTEMS = [
+    { key: 'cardiovascular', label: 'Cardiovascular', icon: '<path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.6l-1-1a5.5 5.5 0 00-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 000-7.8z"/>' },
+    { key: 'coagulation', label: 'Coagulation', icon: '<path d="M12 2s6 7.5 6 12a6 6 0 01-12 0c0-4.5 6-12 6-12z"/>' },
+    { key: 'endocrine', label: 'Endocrine', icon: '<path d="M12 2l2.6 5.3L20 8.2l-4 3.9.9 5.4-4.9-2.6L7.1 17.5l.9-5.4-4-3.9 5.4-.9L12 2z"/>' },
+    { key: 'gi', label: 'GI', icon: '<path d="M7 3c0 3 0 5 2 6-2 1-2 3-2 6a5 5 0 0010 0V9a4 4 0 00-4-4"/>' },
+    { key: 'analgesic', label: 'Analgesic', icon: '<rect x="3" y="9" width="18" height="6" rx="3"/><path d="M12 9v6"/>' },
+    { key: 'antimicrobial', label: 'Antimicrobial', icon: '<path d="M12 2l8 3v6c0 5-3.5 8.5-8 11-4.5-2.5-8-6-8-11V5l8-3z"/>' },
+    { key: 'respiratory', label: 'Respiratory', icon: '<path d="M9 3v8a3 3 0 01-3 3H5a2 2 0 00-2 2v2a3 3 0 003 3h1"/><path d="M15 3v8a3 3 0 003 3h1a2 2 0 012 2v2a3 3 0 01-3 3h-1"/><path d="M9 3h6"/>' },
+    { key: 'neurological', label: 'Neurological', icon: '<path d="M9 4a3 3 0 00-3 3 3 3 0 00-2 5 3 3 0 002 5 3 3 0 003 3M9 4a3 3 0 013 3v10a3 3 0 01-3 3M9 4c0-1 1-2 2-2M15 4a3 3 0 013 3 3 3 0 012 5 3 3 0 01-2 5 3 3 0 01-3 3M15 4a3 3 0 00-3 3"/>' },
+    { key: 'rheumatology', label: 'Rheumatology', icon: '<circle cx="7" cy="17" r="3"/><circle cx="17" cy="7" r="3"/><path d="M9.5 14.5l5-5"/>' },
+    { key: 'oncology', label: 'Oncology', icon: '<circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/>' },
+  ];
+
+  const tabsEl = document.getElementById('system-tabs');
+  const groupsEl = document.getElementById('system-groups');
+
+  const bySystem = {};
+  for (const [key, c] of Object.entries(db.classes)) {
+    (bySystem[c.system] = bySystem[c.system] || []).push(key);
+  }
+
+  tabsEl.innerHTML = SYSTEMS.filter(s => bySystem[s.key]).map((s, i) =>
+    '<button class="tab' + (i === 0 ? ' active' : '') + '" data-sys="' + s.key + '">' +
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' + s.icon + '</svg>' +
+    s.label + ' <span style="opacity:.6">' + bySystem[s.key].length + '</span>' +
+    '</button>'
+  ).join('');
+
+  groupsEl.innerHTML = SYSTEMS.filter(s => bySystem[s.key]).map((s, i) =>
+    '<div class="system-group' + (i === 0 ? ' active' : '') + '" data-sys="' + s.key + '">' +
+    bySystem[s.key].map(key => {
+      const c = db.classes[key];
+      return '<div class="class-block">' +
+        '<div class="class-name">' + c.label + '</div>' +
+        '<div class="drugs-list">' + c.drugs.join(' · ') + '</div>' +
+        '<div class="se-row"><span class="se-tag common">Common</span><span>' + c.side_effects.common.join(', ') + '</span></div>' +
+        '<div class="se-row"><span class="se-tag uncommon">Uncommon</span><span>' + c.side_effects.uncommon.join(', ') + '</span></div>' +
+        (c.cautions ? '<div class="caution"><b>Caution — </b>' + c.cautions.join('; ') + '</div>' : '') +
+        '</div>';
+    }).join('') +
+    '</div>'
+  ).join('');
+
+  tabsEl.addEventListener('click', e => {
+    const btn = e.target.closest('.tab');
+    if (!btn) return;
+    tabsEl.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t === btn));
+    groupsEl.querySelectorAll('.system-group').forEach(g => g.classList.toggle('active', g.dataset.sys === btn.dataset.sys));
+  });
+})();
+</script>
+</body>
+</html>
