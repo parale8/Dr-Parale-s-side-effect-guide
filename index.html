@@ -403,7 +403,9 @@ footer{
         "OLSERTAN AM",
         "OLMESAR A",
         "AMLOKIND H",
-        "OLSAR"
+        "OLSAR",
+        "CETANIL",
+        "cilnedipine"
       ],
       "side_effects": {
         "common": [
@@ -497,7 +499,8 @@ footer{
         "bumetanide",
         "FUROPED SOLUTION",
         "LASIX",
-        "LASIX INJ"
+        "LASIX INJ",
+        "DYTOR"
       ],
       "side_effects": {
         "common": [
@@ -3453,7 +3456,9 @@ footer{
         "AUTRIN",
         "FERAHEME",
         "DEXORANGE",
-        "FEROGLOBIN"
+        "FEROGLOBIN",
+        "folic acid",
+        "FOLVITE"
       ],
       "side_effects": {
         "common": [
@@ -3502,7 +3507,9 @@ footer{
         "CELIN",
         "LIMCEE",
         "VITAMIN C",
-        "ZINCEE"
+        "ZINCEE",
+        "calciferol",
+        "LARETOL"
       ],
       "side_effects": {
         "common": [
@@ -3707,6 +3714,29 @@ footer{
       "source_page": "Ch.55",
       "cautions": [
         "azoles are potent CYP3A4 inhibitors \u2014 raise levels of many cardiac drugs (statins, some CCBs, some antiarrhythmics); check interactions before co-prescribing"
+      ]
+    },
+    "Alkalizing_agent": {
+      "label": "Alkalizing agent (sodium bicarbonate)",
+      "drugs": [
+        "sodium bicarbonate",
+        "SOBISIS"
+      ],
+      "side_effects": {
+        "common": [
+          "belching/flatulence",
+          "mild GI upset"
+        ],
+        "uncommon": [
+          "metabolic alkalosis (excess/prolonged use)",
+          "sodium overload \u2014 caution in heart failure/hypertension",
+          "milk-alkali syndrome (rare, with calcium co-administration)"
+        ]
+      },
+      "system": "gi",
+      "source_page": "not in Tripathi source \u2014 supplementary",
+      "cautions": [
+        "caution in heart failure and hypertension given sodium load \u2014 relevant given overlap with cardiology patients"
       ]
     }
   },
@@ -4661,7 +4691,24 @@ footer{
   document.getElementById('class-count').textContent = Object.keys(db.classes).length + ' classes';
 
   function normalize(name) {
-    return (name || '').toLowerCase().replace(/[^a-z0-9 ]/g, '').trim();
+    return (name || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+  }
+
+  const FILLER_WORDS = new Set(['tab','tabs','tablet','tablets','cap','caps','capsule','capsules',
+    'inj','injection','syp','syrup','susp','suspension','sol','solution','drops','drop','gel',
+    'cream','ointment','spray','lotion','sr','er','xl','xr','od','bd','td','mg','mcg','ml','gm',
+    'iu','plus','forte','retard','dt','md','ds']);
+
+  function coreTokens(normalized) {
+    return normalized.split(' ').filter(w => w && !FILLER_WORDS.has(w)).join(' ');
+  }
+
+  function drugMatches(typedNormalized, storedRaw) {
+    const storedNormalized = normalize(storedRaw);
+    const a = coreTokens(typedNormalized);
+    const b = coreTokens(storedNormalized);
+    if (!a || !b) return false;
+    return a.includes(b) || b.includes(a);
   }
 
   function classesForDrug(drugName) {
@@ -4669,7 +4716,7 @@ footer{
     if (!n) return [];
     const hits = [];
     for (const [key, c] of Object.entries(db.classes)) {
-      if (c.drugs.some(d => n.includes(normalize(d)) || normalize(d).includes(n))) hits.push(key);
+      if (c.drugs.some(d => drugMatches(n, d))) hits.push(key);
     }
     return hits;
   }
@@ -4684,7 +4731,7 @@ footer{
     // check combinations first (more specific — a combo brand shouldn't
     // only show one ingredient's profile)
     for (const [comboKey, combo] of Object.entries(db.combinations || {})) {
-      if (combo.drugs.some(d => n.includes(normalize(d)) || normalize(d).includes(n))) {
+      if (combo.drugs.some(d => drugMatches(n, d))) {
         return { classKeys: combo.component_classes, comboKey };
       }
     }
@@ -4766,7 +4813,7 @@ footer{
     for (const text of intolerances) {
       const n = normalize(text);
       for (const [key, c] of Object.entries(db.classes)) {
-        if (c.drugs.some(d => n.includes(normalize(d))) && drugClasses.includes(key)) {
+        if (c.drugs.some(d => drugMatches(n, d)) && drugClasses.includes(key)) {
           conflict = { reason: text, classLabel: c.label };
           break;
         }
